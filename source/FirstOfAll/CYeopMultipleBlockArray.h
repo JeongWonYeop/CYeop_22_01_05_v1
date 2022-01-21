@@ -8,7 +8,7 @@ class CYeopMultipleBlockArray
 public:
     CYeopMultipleBlockArray();
     ~CYeopMultipleBlockArray();
-    const CRecord GetRecord(int pos);
+    const CRecord* GetRecord(int pos);
     CRecord * GetNewRecord(int pos);
     void AddRecord();
     void BlockArrayClear();

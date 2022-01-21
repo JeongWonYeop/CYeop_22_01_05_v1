@@ -28,15 +28,20 @@ template <class CRecord, int Size, int Count  >
      }
  }
  template <class CRecord, int Size, int Count  >
- const CRecord CYeopMultipleBlockArray< CRecord, Size, Count >::GetRecord(int pos)
+ const CRecord *CYeopMultipleBlockArray< CRecord, Size, Count >::GetRecord(int pos)
  {
 // 있는 것 안에서.
-     CRecord ret;
+     CRecord *ret = NULL;
      int iFindSize = pos / Size;
      int iFindCount = pos % Size;
      if( NULL != mBlockArray [iFindSize] )
      {
-         ret = mBlockArray[iFindSize][iFindCount];
+         //// 여태까지 들어가 있는 데이터 갯수 mCount 개.
+         if( iFindCount <= mCount % Size )
+         {
+             ret = &mBlockArray[iFindSize][iFindCount];
+         }
+         
      }
 
      return ret;

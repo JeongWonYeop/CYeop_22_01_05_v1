@@ -13,7 +13,22 @@ CYeopAIDokSong::~CYeopAIDokSong() {
 
 void CYeopAIDokSong::execute()
 {
-    CheckDokSong();
+    bool bIsTurnOn = true;
+    bool bIsKeepGoing = true;
+
+    while (bIsTurnOn)
+    {
+        bIsKeepGoing = true;
+        CheckDokSong();
+        
+
+
+        while(bIsKeepGoing)
+        {
+            CheckKeepGoing(bIsTurnOn, bIsKeepGoing);
+        }
+    }
+    
 }
 
 void CYeopAIDokSong::CheckDokSong()
@@ -35,19 +50,20 @@ void CYeopAIDokSong::CheckDokSong()
     printf("[AIYEOP] 오늘 몇년도 몇월 몇일 인가요?\n");
     date dateAnswer;
     dateAnswer.clear();
-    scanf("%d %d %d", &dateAnswer.year, &dateAnswer.month, &dateAnswer.day);
+    scanf("%d-%d-%d", &dateAnswer.year, &dateAnswer.month, &dateAnswer.day);
     
 
     date * Date = mStorage.GetNewRecord(mStorage.getCount());
  
-        if (NULL != Date)
-        {
-            Date->year = dateAnswer.year;
-            Date->month = dateAnswer.month;
-            Date->day = dateAnswer.day;
-            mStorage.AddRecord();
+    if (NULL != Date)
+    {
+        Date->year = dateAnswer.year;
+        Date->month = dateAnswer.month;
+        Date->day = dateAnswer.day;
+        mStorage.AddRecord();
+    }
 
-        }
+
      
 }
 
@@ -88,5 +104,40 @@ bool CYeopAIDokSong::AnswerCheck(int iTempAnswer)
     }
 
     return ret;
+
+}
+
+void CYeopAIDokSong::CheckKeepGoing(bool &IsTurnOn, bool &IsKeepGoing)
+{
+    printf("\n\n[CYeopAIDokSong]선택 하세요.  1. 목록   2. 다시 입력  3.  종료 \n");
+    int iChoice = -1;
+    scanf("%d", &iChoice);
+  
+    if(1 == iChoice)
+    {
+        int iCount = mStorage.getCount();
+        for(int i = 0 ; i < iCount ; i++)
+        {
+            const date * pData = mStorage.GetRecord(i);
+
+            if( NULL != pData)
+            {
+                printf("저장된 데이터[%d], Year<%d>Month<%d>Day<%d>\n", i + 1, pData->year, pData->month, pData->day);
+            }
+        }
+
+    }
+    else if(2 == iChoice)
+    {
+        IsKeepGoing = false;
+    }
+    else if(3 == iChoice)
+    {
+        IsKeepGoing = false;
+        IsTurnOn = false;
+    }
+
+
+
 
 }

@@ -25,6 +25,7 @@ private:
     date mDate;
     void CheckDokSong();
     bool AnswerCheck(int iTempAnswer);
+    void CheckKeepGoing(bool &IsTurnOn, bool &IsKeepGoing);
 };
 
 
